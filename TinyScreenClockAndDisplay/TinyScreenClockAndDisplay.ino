@@ -8,7 +8,7 @@
 #define ALPHA           0xFE
 #define BROWN           0x32
 // Define colors
-  bv
+
 #include "SSD1331.h"
 #include <SPI.h>
 #include <Wire.h>
@@ -25,8 +25,8 @@ int int_number = 1;
 
 DS1339 RTC = DS1339();
 
-int displayState=0;
-int buttonReleased=0;
+int displayState = 0;
+int buttonReleased = 0;
 int countdown = 0;
 int messages = 0;
 int menu = 0;
@@ -35,10 +35,10 @@ int menu = 0;
 
 void setup()
 {
-  start_coreservices();
-  //start_effects();
-  display_battery();
- Serial.begin(9600);
+ start_coreservices();
+ start_effects();
+ display_battery();
+ Serial.begin(9600); // maybe add debug mode to save battery?
 }
 void loop()
 {
@@ -110,7 +110,6 @@ void start_coreservices()
   display.begin();
   display.setFlip(1);
   display.setBrightness(5);
-
   RTC.start();
 }
 void display_battery()
@@ -145,10 +144,10 @@ void display_battery()
 }
 void start_effects()
 {
-  display.fontColor(GREEN,BLACK);
+  display.fontColor(RED,BLACK);
   display.setFont(liberationSans_16ptFontInfo);
   display.setCursor(0,10);
-  display.print("SSD");
+  display.print("Nitrogen");
   delay(2000);
   displayState = 1;
   display.on();
@@ -157,6 +156,7 @@ void start_effects()
 }
 void rtc_months()
 {
+  // pretty sure i can use a for instance to clean this up
   unsigned char month;
   month = RTC.getMonths();  
   switch (month) {
@@ -225,12 +225,7 @@ void rtc_days()
   display.print("31st");
   break;
   }
-  if ((day >=4) && (day<=20))
-  {
-  display.print(day);
-  display.print("th");
-  }
-  if ((day >= 24) && (day <= 30))
+  if ((day >= 24) && (day <= 30) || (day >=4) && (day<=20))
   {
   display.print(day);
   display.print("th");
