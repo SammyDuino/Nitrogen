@@ -30,6 +30,7 @@ int buttonReleased = 0;
 int countdown = 0;
 int messages = 0;
 int menu = 0;
+String channel = "beta";
 // Defines integers being used
 
 
@@ -38,7 +39,10 @@ void setup()
  start_coreservices();
  start_effects();
  display_battery();
- Serial.begin(9600); // maybe add debug mode to save battery?
+ if (channel.equals("beta"))
+ {
+ Serial.begin(9600);
+ }
 }
 void loop()
 {
@@ -88,21 +92,20 @@ void loop()
   if (hour > 12) {
   hour = hour - 12;
   }
-/*  display.print(hour);
+  display.print(hour);
   display.print(":");
   if (minute < 10) {
     display.print("0" + minute);
-  }*/
+  }
  
 
 // Date  
   display.setFont(liberationSans_10ptFontInfo);
   display.fontColor(WHITE,BLACK);
   display.setCursor(1,1);
-  // Months
-//  rtc_months();
-  //display.print(" ");
-  //rtc_days();
+  rtc_months();
+  display.print(" ");
+  rtc_days();
 }
 void start_coreservices()
 {
@@ -148,6 +151,10 @@ void start_effects()
   display.setFont(liberationSans_16ptFontInfo);
   display.setCursor(0,10);
   display.print("Nitrogen");
+  display.setCursor(0,20);
+  display.fontColor(WHITE,BLACK);
+  display.setFont(liberationSans_12ptFontInfo);
+  display.print("Version 1.0 beta");
   delay(2000);
   displayState = 1;
   display.on();
